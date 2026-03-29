@@ -13,6 +13,7 @@ import { About } from './pages/About';
 import { Calendar } from './pages/Calendar';
 import { Compatibility } from './pages/Compatibility';
 import { Share } from './pages/Share';
+import { ReverseLookup } from './pages/ReverseLookup';
 
 // Lazy-load PDF page — @react-pdf/renderer is ~600KB
 const Report = lazy(() => import('./pages/Report').then((m) => ({ default: m.Report })));
@@ -48,6 +49,7 @@ export function App() {
           <Route path="/explore" element={<Explore />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/compare" element={<Compatibility />} />
+          <Route path="/reverse" element={<ReverseLookup />} />
           <Route path="/report" element={<Suspense fallback={<LoadingFallback />}><Report /></Suspense>} />
           <Route path="/share/:encoded" element={<Share />} />
           <Route path="/about" element={<About />} />
