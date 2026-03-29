@@ -8,6 +8,8 @@ const navLinks = [
   { to: '/systems', label: 'SYSTEMS' },
   { to: '/decode', label: 'DECODE' },
   { to: '/explore', label: 'EXPLORE' },
+  { to: '/calendar', label: 'CALENDAR' },
+  { to: '/compare', label: 'COMPARE' },
   { to: '/about', label: 'ABOUT' },
 ];
 

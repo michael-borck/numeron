@@ -7,6 +7,9 @@ import { Decode } from './pages/Decode';
 import { Systems } from './pages/Systems';
 import { Explore } from './pages/Explore';
 import { About } from './pages/About';
+import { Calendar } from './pages/Calendar';
+import { Compatibility } from './pages/Compatibility';
+import { Share } from './pages/Share';
 
 export function App() {
   return (
@@ -20,6 +23,9 @@ export function App() {
           <Route path="/decode" element={<Decode />} />
           <Route path="/systems" element={<Systems />} />
           <Route path="/explore" element={<Explore />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/compare" element={<Compatibility />} />
+          <Route path="/share/:encoded" element={<Share />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </main>

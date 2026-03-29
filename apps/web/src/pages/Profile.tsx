@@ -1,12 +1,16 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useStore } from '../store';
 import { TerminalCard } from '../components/TerminalCard';
 import { NumberDisplay } from '../components/NumberDisplay';
 import { SystemCompare } from '../components/SystemCompare';
+import { EasterEggDisplay } from '../components/EasterEggDisplay';
+import { detectEasterEggs } from '../hooks/useEasterEggs';
 import { microDisclaimers } from '@numeron/core';
 
 export function Profile() {
   const { profiles, activeSystem, setActiveSystem, profileInput } = useStore();
+  const [shareMsg, setShareMsg] = useState('');
 
   if (!profiles || !profileInput) {
     return (
@@ -35,13 +39,39 @@ export function Profile() {
     abjad: 'Abjad',
   };
 
+  const easterEggs = detectEasterEggs(profileInput, profile);
+
+  const handleShare = () => {
+    const encoded = btoa(JSON.stringify(profileInput));
+    const url = `${window.location.origin}/share/${encoded}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setShareMsg('> SHARE URL COPIED');
+      setTimeout(() => setShareMsg(''), 3000);
+    });
+  };
+
   return (
     <div className="max-w-4xl mx-auto space-y-8">
+      {/* Easter eggs */}
+      <EasterEggDisplay eggs={easterEggs} />
+
       {/* Header */}
       <div className="space-y-2">
-        <h1 className="font-terminal text-2xl text-[var(--accent)] text-glow">
-          {'> '}PROFILE: {profileInput.fullBirthName.toUpperCase()}
-        </h1>
+        <div className="flex items-start justify-between gap-4">
+          <h1 className="font-terminal text-2xl text-[var(--accent)] text-glow">
+            {'> '}PROFILE: {profileInput.fullBirthName.toUpperCase()}
+          </h1>
+          <button
+            onClick={handleShare}
+            className="font-terminal text-xs text-[var(--text-secondary)] hover:text-[var(--accent)]
+              border border-[var(--border)] px-3 py-1 min-h-[44px] transition-colors shrink-0"
+          >
+            [ SHARE ]
+          </button>
+        </div>
+        {shareMsg && (
+          <p className="font-terminal text-xs text-[var(--accent-green)]">{shareMsg}</p>
+        )}
         <p className="font-terminal text-xs text-[var(--text-secondary)]">
           DOB: {profileInput.dateOfBirth}
         </p>
