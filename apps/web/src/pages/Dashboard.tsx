@@ -94,7 +94,7 @@ export function Dashboard() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="As on birth certificate"
+              placeholder="As on birth certificate. Works for pets too."
               className={inputClass}
               autoComplete="name"
               maxLength={200}
