@@ -57,8 +57,14 @@ export {
   CYCLIC_NUMBER,
   cyclicNumberMultiples,
   TESLA_PATTERN,
+  companyProfiles,
+  analyzeCompany,
+  companiesBySector,
+  countryProfiles,
+  analyzeCountry,
+  countriesByContinent,
 } from './explorers/index.js';
-export type { ConstantEntry } from './explorers/index.js';
+export type { ConstantEntry, CompanyProfile, CountryProfile } from './explorers/index.js';
 
 // Content
 export {

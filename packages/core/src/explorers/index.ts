@@ -30,3 +30,17 @@ export {
   cyclicNumberMultiples,
   TESLA_PATTERN,
 } from './kaprekar.js';
+
+export {
+  companyProfiles,
+  analyzeCompany,
+  companiesBySector,
+} from './companies.js';
+export type { CompanyProfile } from './companies.js';
+
+export {
+  countryProfiles,
+  analyzeCountry,
+  countriesByContinent,
+} from './countries.js';
+export type { CountryProfile } from './countries.js';

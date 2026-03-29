@@ -14,21 +14,30 @@ import {
   cyclicNumberMultiples,
   TESLA_PATTERN,
   microDisclaimers,
+  companiesBySector,
+  analyzeCompany,
+  countriesByContinent,
+  analyzeCountry,
 } from '@numeron/core';
 
-type Tab = 'constants' | 'magic' | 'fibonacci' | 'sudoku' | 'sacred';
+
+type Tab = 'constants' | 'magic' | 'fibonacci' | 'sudoku' | 'sacred' | 'companies' | 'countries';
 
 export function Explore() {
   const [activeTab, setActiveTab] = useState<Tab>('constants');
   const [userConstant, setUserConstant] = useState('');
   const [kaprekarInput, setKaprekarInput] = useState('');
   const [sudokuInput, setSudokuInput] = useState('');
+  const [companySearch, setCompanySearch] = useState('');
+  const [countrySearch, setCountrySearch] = useState('');
 
   const tabs: { key: Tab; label: string }[] = [
     { key: 'constants', label: 'CONSTANTS' },
     { key: 'magic', label: 'MAGIC SQUARES' },
     { key: 'fibonacci', label: 'FIBONACCI' },
     { key: 'sudoku', label: 'SUDOKU' },
+    { key: 'companies', label: 'COMPANIES' },
+    { key: 'countries', label: 'COUNTRIES' },
     { key: 'sacred', label: 'PATTERNS' },
   ];
 
@@ -283,6 +292,169 @@ export function Explore() {
               })()}
             </div>
           </TerminalCard>
+        </div>
+      )}
+
+      {/* Companies tab */}
+      {activeTab === 'companies' && (
+        <div className="space-y-6">
+          <p className="font-body text-sm text-[var(--text-secondary)]">
+            Numerological profiles for iconic companies. Name, ticker, brand, and founding date — all reduced.
+          </p>
+
+          {/* Custom company input */}
+          <TerminalCard title="ANALYSE YOUR OWN">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <input
+                placeholder="Company name"
+                value={companySearch}
+                onChange={(e) => setCompanySearch(e.target.value)}
+                className="bg-transparent border border-[var(--border)] text-[var(--text-primary)]
+                  font-body px-3 py-2 min-h-[44px] focus:border-[var(--accent)] focus:outline-none
+                  placeholder:text-[var(--text-secondary)] placeholder:opacity-40"
+              />
+            </div>
+            {companySearch.trim().length > 1 && (() => {
+              const result = analyzeCompany(companySearch);
+              return (
+                <div className="mt-3 font-terminal text-sm text-[var(--text-secondary)]">
+                  <span className="text-[var(--accent)]">{companySearch}</span> → Expression{' '}
+                  <span className="text-[var(--accent)] text-lg">{result.nameExpression.value}</span>
+                </div>
+              );
+            })()}
+          </TerminalCard>
+
+          {/* Pre-loaded companies by sector */}
+          {Object.entries(companiesBySector()).map(([sector, companies]) => (
+            <TerminalCard key={sector} title={sector.toUpperCase()}>
+              <div className="overflow-x-auto">
+                <table className="w-full font-body text-sm">
+                  <thead>
+                    <tr className="border-b border-[var(--border)]">
+                      <th className="text-left py-1 pr-2 font-terminal text-xs text-[var(--text-secondary)]">Brand</th>
+                      <th className="text-center py-1 px-2 font-terminal text-xs text-[var(--text-secondary)]">Name</th>
+                      <th className="text-center py-1 px-2 font-terminal text-xs text-[var(--text-secondary)]">Ticker</th>
+                      <th className="text-center py-1 px-2 font-terminal text-xs text-[var(--text-secondary)]">Founded</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {companies.map((c) => (
+                      <tr key={c.name} className="border-b border-[var(--border)] border-opacity-30">
+                        <td className="py-1.5 pr-2 text-[var(--text-secondary)]">{c.brandName || c.name}</td>
+                        <td className="py-1.5 px-2 text-center">
+                          <span className={`font-terminal ${c.nameExpression.masterNumber ? 'text-[var(--accent-green)]' : 'text-[var(--accent)]'}`}>
+                            {c.nameExpression.value}
+                          </span>
+                        </td>
+                        <td className="py-1.5 px-2 text-center">
+                          {c.tickerExpression ? (
+                            <span className="font-terminal text-[var(--accent)]">{c.tickerExpression.value}</span>
+                          ) : (
+                            <span className="opacity-30">—</span>
+                          )}
+                        </td>
+                        <td className="py-1.5 px-2 text-center">
+                          {c.foundedLifePath ? (
+                            <span className={`font-terminal ${c.foundedLifePath.masterNumber ? 'text-[var(--accent-green)]' : 'text-[var(--accent)]'}`}>
+                              {c.foundedLifePath.value}
+                            </span>
+                          ) : (
+                            <span className="opacity-30">—</span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </TerminalCard>
+          ))}
+
+          <p className="text-xs italic text-[var(--text-secondary)]">
+            Company founding dates are approximate where exact dates are not publicly documented.
+            This is entertainment, not financial advice.
+          </p>
+        </div>
+      )}
+
+      {/* Countries tab */}
+      {activeTab === 'countries' && (
+        <div className="space-y-6">
+          <p className="font-body text-sm text-[var(--text-secondary)]">
+            Numerological profiles for countries of the world. Country name reduced as expression number, independence date as life path.
+          </p>
+
+          {/* Custom country input */}
+          <TerminalCard title="ANALYSE YOUR OWN">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <input
+                placeholder="Country name"
+                value={countrySearch}
+                onChange={(e) => setCountrySearch(e.target.value)}
+                className="bg-transparent border border-[var(--border)] text-[var(--text-primary)]
+                  font-body px-3 py-2 min-h-[44px] focus:border-[var(--accent)] focus:outline-none
+                  placeholder:text-[var(--text-secondary)] placeholder:opacity-40"
+              />
+            </div>
+            {countrySearch.trim().length > 1 && (() => {
+              const result = analyzeCountry(countrySearch);
+              return (
+                <div className="mt-3 font-terminal text-sm text-[var(--text-secondary)]">
+                  <span className="text-[var(--accent)]">{countrySearch}</span> → Expression{' '}
+                  <span className="text-[var(--accent)] text-lg">{result.nameExpression.value}</span>
+                </div>
+              );
+            })()}
+          </TerminalCard>
+
+          {/* Pre-loaded countries by continent */}
+          {Object.entries(countriesByContinent()).map(([continent, countries]) => (
+            <TerminalCard key={continent} title={continent.toUpperCase()}>
+              <div className="overflow-x-auto">
+                <table className="w-full font-body text-sm">
+                  <thead>
+                    <tr className="border-b border-[var(--border)]">
+                      <th className="text-left py-1 pr-2 font-terminal text-xs text-[var(--text-secondary)]">Country</th>
+                      <th className="text-center py-1 px-2 font-terminal text-xs text-[var(--text-secondary)]">Name</th>
+                      <th className="text-center py-1 px-2 font-terminal text-xs text-[var(--text-secondary)]">Independence</th>
+                      <th className="text-left py-1 px-2 font-terminal text-xs text-[var(--text-secondary)]">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {countries.map((c) => (
+                      <tr key={c.name} className="border-b border-[var(--border)] border-opacity-30">
+                        <td className="py-1.5 pr-2 text-[var(--text-secondary)]">{c.name}</td>
+                        <td className="py-1.5 px-2 text-center">
+                          <span className={`font-terminal ${c.nameExpression.masterNumber ? 'text-[var(--accent-green)]' : 'text-[var(--accent)]'}`}>
+                            {c.nameExpression.value}
+                          </span>
+                        </td>
+                        <td className="py-1.5 px-2 text-center">
+                          {c.foundedLifePath ? (
+                            <span className={`font-terminal ${c.foundedLifePath.masterNumber ? 'text-[var(--accent-green)]' : 'text-[var(--accent)]'}`}>
+                              {c.foundedLifePath.value}
+                            </span>
+                          ) : (
+                            <span className="opacity-30">—</span>
+                          )}
+                        </td>
+                        <td className="py-1.5 px-2 text-xs text-[var(--text-secondary)]">
+                          {c.independenceDate || '—'}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </TerminalCard>
+          ))}
+
+          <p className="text-xs italic text-[var(--text-secondary)]">
+            Independence dates are simplified — many countries have complex founding histories.
+            Some countries (UK, Japan, Ethiopia) predate the concept of "independence day."
+            This is cultural curiosity, not geopolitical commentary.
+          </p>
         </div>
       )}
 
