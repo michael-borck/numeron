@@ -10,6 +10,7 @@ const navLinks = [
   { to: '/explore', label: 'EXPLORE' },
   { to: '/calendar', label: 'CALENDAR' },
   { to: '/compare', label: 'COMPARE' },
+  { to: '/report', label: 'PDF' },
   { to: '/about', label: 'ABOUT' },
 ];
 

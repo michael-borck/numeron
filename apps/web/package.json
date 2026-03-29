@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@numeron/core": "workspace:*",
+    "@numeron/pdf": "workspace:*",
+    "@react-pdf/renderer": "^4.3.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "react-router-dom": "^6.28.0",

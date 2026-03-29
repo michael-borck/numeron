@@ -1,0 +1,19 @@
+{
+  "name": "@numeron/pdf",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@numeron/core": "workspace:*",
+    "@react-pdf/renderer": "^4.3.0",
+    "react": "^18.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.0",
+    "typescript": "^5.7.0"
+  }
+}
