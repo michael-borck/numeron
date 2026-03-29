@@ -5,8 +5,10 @@ import { TerminalCard } from '../components/TerminalCard';
 import { NumberDisplay } from '../components/NumberDisplay';
 import { SystemCompare } from '../components/SystemCompare';
 import { EasterEggDisplay } from '../components/EasterEggDisplay';
+import { SessionStatsDisplay } from '../components/SessionStats';
+import { DidYouKnow } from '../components/DidYouKnow';
 import { detectEasterEggs } from '../hooks/useEasterEggs';
-import { microDisclaimers } from '@numeron/core';
+import { microDisclaimers, generateSessionStats } from '@numeron/core';
 
 export function Profile() {
   const { profiles, activeSystem, setActiveSystem, profileInput } = useStore();
@@ -40,6 +42,7 @@ export function Profile() {
   };
 
   const easterEggs = detectEasterEggs(profileInput, profile);
+  const sessionStats = generateSessionStats(profiles);
 
   const handleShare = () => {
     const encoded = btoa(JSON.stringify(profileInput));
@@ -76,6 +79,12 @@ export function Profile() {
           DOB: {profileInput.dateOfBirth}
         </p>
       </div>
+
+      {/* Session stats */}
+      <SessionStatsDisplay stats={sessionStats} />
+
+      {/* Did you know? — based on life path */}
+      <DidYouKnow number={profile.lifePath.value} />
 
       {/* System selector */}
       <div className="flex flex-wrap gap-2" role="tablist" aria-label="Numerology system">

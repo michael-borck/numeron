@@ -73,3 +73,7 @@ export {
   culturalContexts,
 } from './interpretations/index.js';
 export type { AboutSection, EasterEgg, CulturalContext } from './interpretations/index.js';
+
+// Insights (session stats, did-you-know facts)
+export { didYouKnowFacts, generateSessionStats } from './insights/index.js';
+export type { SessionStats } from './insights/index.js';
