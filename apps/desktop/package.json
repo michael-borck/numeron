@@ -1,0 +1,42 @@
+{
+  "name": "numeron-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "NUMERON — The Ancient Science of Numbers, Decoded. Desktop App.",
+  "author": "Retroverse Studios",
+  "license": "MIT",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "package": "electron-builder --config electron-builder.yml",
+    "package:win": "electron-builder --config electron-builder.yml --win",
+    "package:mac": "electron-builder --config electron-builder.yml --mac",
+    "package:linux": "electron-builder --config electron-builder.yml --linux",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json"
+  },
+  "dependencies": {
+    "@numeron/core": "workspace:*",
+    "electron-store": "^10.0.0",
+    "electron-updater": "^6.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "electron": "^35.0.0",
+    "electron-builder": "^26.0.0",
+    "electron-vite": "^3.1.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "react-router-dom": "^6.28.0",
+    "zustand": "^5.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "tailwindcss": "^3.4.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist-electron",
+    "lib": ["ES2022"],
+    "module": "CommonJS",
+    "moduleResolution": "node"
+  },
+  "include": ["src/main/**/*.ts", "src/preload/**/*.ts"]
+}

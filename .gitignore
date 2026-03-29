@@ -29,6 +29,8 @@ coverage/
 
 # Electron
 release/
+dist-electron/
+dist-renderer/
 *.dmg
 *.exe
 *.AppImage

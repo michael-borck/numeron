@@ -71,21 +71,32 @@
       <!-- Download -->
       <section class="download" id="download">
         <h2>&gt; DOWNLOAD</h2>
-        <div class="download-buttons">
-          <a href="#" class="btn btn-primary">Windows (NSIS)</a>
-          <a href="#" class="btn btn-primary">macOS (DMG)</a>
-          <a href="#" class="btn btn-primary">Linux (AppImage)</a>
+        <div class="download-buttons" id="downloadButtons">
+          <a id="dl-win" href="#" class="btn btn-primary" style="display:none">Windows (NSIS)</a>
+          <a id="dl-mac" href="#" class="btn btn-primary" style="display:none">macOS (DMG)</a>
+          <a id="dl-linux" href="#" class="btn btn-primary" style="display:none">Linux (AppImage)</a>
         </div>
-        <p class="download-note">v0.1.0 — Desktop app coming soon. Use the web app in the meantime.</p>
+        <p class="download-note" id="downloadNote">Checking for latest release...</p>
+        <p class="download-note" style="margin-top: 8px">
+          <a href="https://github.com/michael-borck/numeron/releases" class="btn btn-secondary" style="font-size: 0.7rem; padding: 8px 16px">
+            All releases on GitHub
+          </a>
+        </p>
       </section>
 
       <!-- Footer -->
       <footer class="footer">
-        <p>NUMERON v0.1.0 // Part of the <strong>Retroverse Studios</strong> collection</p>
+        <p>NUMERON // Part of the <strong>Retroverse Studios</strong> collection</p>
         <p>Entertainment and cultural exploration only. Not life advice.</p>
+        <p style="margin-top: 8px">
+          <a href="https://github.com/michael-borck/numeron" style="color: var(--dim); text-decoration: none">
+            github.com/michael-borck/numeron
+          </a>
+        </p>
       </footer>
     </div>
 
     <script src="/src/digitrain.js" type="module"></script>
+    <script src="/src/downloads.js" type="module"></script>
   </body>
 </html>

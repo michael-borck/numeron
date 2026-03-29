@@ -1,0 +1,72 @@
+name: Release Desktop App
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+          - os: macos-latest
+            platform: mac
+          - os: windows-latest
+            platform: win
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build core package
+        run: pnpm --filter @numeron/core build
+
+      - name: Build desktop app
+        working-directory: apps/desktop
+        run: pnpm build
+
+      - name: Package for ${{ matrix.platform }}
+        working-directory: apps/desktop
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm package:${{ matrix.platform }}
+
+      # electron-builder auto-publishes to GitHub Releases when GH_TOKEN is set.
+      # It uploads:
+      #   - The installer/binary (NSIS, DMG, AppImage)
+      #   - latest.yml / latest-mac.yml / latest-linux.yml (for electron-updater)
+      #
+      # electron-updater in the running app reads these .yml files to check
+      # if a newer version is available, then downloads and installs it.
+
+      - name: Upload artifacts (backup)
+        uses: actions/upload-artifact@v4
+        with:
+          name: numeron-${{ matrix.platform }}
+          path: |
+            apps/desktop/release/*.exe
+            apps/desktop/release/*.dmg
+            apps/desktop/release/*.AppImage
+            apps/desktop/release/*.yml
+          if-no-files-found: ignore
