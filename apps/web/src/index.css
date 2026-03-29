@@ -1,0 +1,197 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Theme CSS Custom Properties ===== */
+
+:root,
+[data-theme='phosphor'] {
+  --bg-primary: #0a0a08;
+  --bg-secondary: #111109;
+  --text-primary: #ffb000;
+  --text-secondary: #7a5500;
+  --accent: #ffb000;
+  --accent-green: #39ff14;
+  --border: #2a2308;
+  --glow: 0 0 8px #ffb000, 0 0 20px rgba(255, 136, 0, 0.25);
+  --glow-green: 0 0 8px #39ff14, 0 0 20px rgba(57, 255, 20, 0.25);
+  --font-heading: 'Share Tech Mono', monospace;
+  --font-body: 'Courier Prime', Courier, monospace;
+}
+
+[data-theme='arcane'] {
+  --bg-primary: #f5f0e8;
+  --bg-secondary: #ede8dd;
+  --text-primary: #1a1208;
+  --text-secondary: #3d2b0a;
+  --accent: #8b6914;
+  --accent-green: #4a7c3f;
+  --border: #8b6914;
+  --glow: none;
+  --glow-green: none;
+  --font-heading: 'Cinzel', serif;
+  --font-body: 'Courier Prime', Courier, monospace;
+}
+
+[data-theme='high-contrast'] {
+  --bg-primary: #000000;
+  --bg-secondary: #111111;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --accent: #ffffff;
+  --accent-green: #00ff00;
+  --border: #ffffff;
+  --glow: none;
+  --glow-green: none;
+  --font-heading: 'Share Tech Mono', monospace;
+  --font-body: 'Courier Prime', Courier, monospace;
+}
+
+/* ===== Base Styles ===== */
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* ===== CRT Scanline Overlay ===== */
+
+.scanlines::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.12) 2px,
+    rgba(0, 0, 0, 0.12) 4px
+  );
+}
+
+/* Disable scanlines on ARCANE and high-contrast */
+[data-theme='arcane'] .scanlines::after,
+[data-theme='high-contrast'] .scanlines::after {
+  display: none;
+}
+
+/* ===== CRT Flicker on load ===== */
+
+@keyframes crt-flicker {
+  0% { opacity: 0.95; }
+  5% { opacity: 0.85; }
+  10% { opacity: 0.95; }
+  15% { opacity: 0.9; }
+  20% { opacity: 1; }
+}
+
+.crt-flicker {
+  animation: crt-flicker 0.3s ease-out;
+}
+
+/* ===== Glow Effects ===== */
+
+.text-glow {
+  text-shadow: var(--glow);
+}
+
+.text-glow-green {
+  text-shadow: var(--glow-green);
+}
+
+.border-glow {
+  box-shadow: var(--glow);
+}
+
+/* ===== Number Count-Up Animation ===== */
+
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.number-reveal {
+  animation: count-up 0.5s ease-out;
+}
+
+/* ===== Master Number Glow Pulse ===== */
+
+@keyframes master-glow {
+  0%, 100% {
+    text-shadow: var(--glow);
+    opacity: 1;
+  }
+  50% {
+    text-shadow: 0 0 16px #ffb000, 0 0 40px rgba(255, 136, 0, 0.5);
+    opacity: 0.85;
+  }
+}
+
+.master-glow {
+  animation: master-glow 2s ease-in-out infinite;
+}
+
+/* ===== Reduced Motion ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  .crt-flicker,
+  .master-glow,
+  .number-reveal,
+  .glow-pulse {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .scanlines::after {
+    display: none;
+  }
+}
+
+/* Manual override class for reduced motion */
+.reduce-motion .crt-flicker,
+.reduce-motion .master-glow,
+.reduce-motion .number-reveal,
+.reduce-motion .glow-pulse {
+  animation: none !important;
+  transition: none !important;
+}
+
+.reduce-motion .scanlines::after {
+  display: none;
+}
+
+/* ===== Scrollbar (PHOSPHOR theme) ===== */
+
+[data-theme='phosphor'] ::-webkit-scrollbar {
+  width: 6px;
+}
+
+[data-theme='phosphor'] ::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+[data-theme='phosphor'] ::-webkit-scrollbar-thumb {
+  background: var(--text-secondary);
+  border-radius: 3px;
+}
+
+/* ===== Focus Styles ===== */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ===== Readability font override ===== */
+
+.font-readable,
+.font-readable p,
+.font-readable span,
+.font-readable li {
+  font-family: 'Atkinson Hyperlegible', system-ui, sans-serif !important;
+}

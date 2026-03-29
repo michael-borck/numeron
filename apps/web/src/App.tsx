@@ -1,0 +1,33 @@
+import { Routes, Route } from 'react-router-dom';
+import { Nav } from './components/Nav';
+import { DisclaimerBanner } from './components/DisclaimerBanner';
+import { Dashboard } from './pages/Dashboard';
+import { Profile } from './pages/Profile';
+import { Decode } from './pages/Decode';
+import { Systems } from './pages/Systems';
+import { Explore } from './pages/Explore';
+import { About } from './pages/About';
+
+export function App() {
+  return (
+    <div className="scanlines min-h-screen flex flex-col">
+      <DisclaimerBanner />
+      <Nav />
+      <main className="flex-1 px-4 py-6 sm:py-8">
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/decode" element={<Decode />} />
+          <Route path="/systems" element={<Systems />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </main>
+      <footer className="border-t border-[var(--border)] py-4 px-4 text-center">
+        <span className="font-terminal text-xs text-[var(--text-secondary)]">
+          NUMERON v0.1.0 // Retroverse Studios // Entertainment only
+        </span>
+      </footer>
+    </div>
+  );
+}
