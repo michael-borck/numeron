@@ -5,6 +5,8 @@ import {
   reduceUserConstant,
   preloadedSquares,
   analyzeMagicSquare,
+  analyzeSudoku,
+  parseSudokuString,
   FIBONACCI_MOD9_CYCLE,
   verifyFibMod9Properties,
   kaprekarProcess,
@@ -20,11 +22,13 @@ export function Explore() {
   const [activeTab, setActiveTab] = useState<Tab>('constants');
   const [userConstant, setUserConstant] = useState('');
   const [kaprekarInput, setKaprekarInput] = useState('');
+  const [sudokuInput, setSudokuInput] = useState('');
 
   const tabs: { key: Tab; label: string }[] = [
     { key: 'constants', label: 'CONSTANTS' },
     { key: 'magic', label: 'MAGIC SQUARES' },
     { key: 'fibonacci', label: 'FIBONACCI' },
+    { key: 'sudoku', label: 'SUDOKU' },
     { key: 'sacred', label: 'PATTERNS' },
   ];
 
@@ -171,6 +175,111 @@ export function Explore() {
                     <p>Cycle sum: {props.cycleSum} → {props.cycleSumReduced}</p>
                   </>
                 );
+              })()}
+            </div>
+          </TerminalCard>
+        </div>
+      )}
+
+      {/* Sudoku tab */}
+      {activeTab === 'sudoku' && (
+        <div className="space-y-6">
+          <TerminalCard title="THE PURE-9 PROPERTIES OF SUDOKU">
+            <div className="font-body text-sm text-[var(--text-secondary)] space-y-2 mb-4">
+              <p>
+                A completed sudoku is numerologically the most perfect structure humans have invented.
+                Every property reduces to 9.
+              </p>
+              <div className="grid grid-cols-2 gap-2 font-terminal text-xs">
+                <span>Total cells: 81 → <span className="text-[var(--accent)]">9</span></span>
+                <span>Each digit appears: 9× → <span className="text-[var(--accent)]">9</span></span>
+                <span>Row/col/box sum: 45 → <span className="text-[var(--accent)]">9</span></span>
+                <span>Total sum: 405 → <span className="text-[var(--accent)]">9</span></span>
+                <span>Valid grids: 6.67×10²¹ → <span className="text-[var(--accent)]">9</span></span>
+                <span>Min givens for unique: 17 → <span className="text-[var(--text-secondary)]">8</span> (not 9!)</span>
+              </div>
+            </div>
+            <p className="text-xs italic text-[var(--text-secondary)]">
+              {microDisclaimers.sudokuCertificate}
+            </p>
+          </TerminalCard>
+
+          <TerminalCard title="ANALYSE A SUDOKU">
+            <div className="space-y-4">
+              <textarea
+                value={sudokuInput}
+                onChange={(e) => setSudokuInput(e.target.value)}
+                placeholder="Paste 81 digits (0 or . for empty cells), or 9 rows of 9 digits..."
+                rows={4}
+                className="w-full bg-transparent border border-[var(--border)] text-[var(--text-primary)]
+                  font-body text-sm px-3 py-2 resize-y
+                  focus:border-[var(--accent)] focus:outline-none transition-colors
+                  placeholder:text-[var(--text-secondary)] placeholder:opacity-40"
+              />
+              {(() => {
+                const cleaned = sudokuInput.replace(/[^0-9.]/g, '').replace(/\./g, '0');
+                if (cleaned.length !== 81) return null;
+
+                try {
+                  const grid = parseSudokuString(cleaned);
+                  const analysis = analyzeSudoku(grid);
+
+                  return (
+                    <div className="space-y-4">
+                      {/* Grid display */}
+                      <div className="grid grid-cols-9 gap-px max-w-sm mx-auto">
+                        {analysis.grid.flat().map((cell, i) => {
+                          const row = Math.floor(i / 9);
+                          const col = i % 9;
+                          const borderR = col === 2 || col === 5 ? 'border-r border-[var(--accent)]' : '';
+                          const borderB = row === 2 || row === 5 ? 'border-b border-[var(--accent)]' : '';
+                          return (
+                            <div
+                              key={i}
+                              className={`
+                                w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center
+                                border border-[var(--border)] font-terminal text-sm
+                                ${cell === 0 ? 'text-[var(--text-secondary)] opacity-30' : 'text-[var(--accent)]'}
+                                ${borderR} ${borderB}
+                              `}
+                            >
+                              {cell || '.'}
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* Analysis results */}
+                      <div className="grid grid-cols-2 gap-2 font-terminal text-xs text-[var(--text-secondary)]">
+                        <span>Valid: {analysis.isValid ? <span className="text-[var(--accent-green)]">YES</span> : <span className="text-[var(--accent)]">NO</span>}</span>
+                        <span>Complete: {analysis.isComplete ? 'YES' : 'NO'}</span>
+                        <span>Total sum: {analysis.totalSum}</span>
+                        <span>Pure-9 score: <span className="text-[var(--accent)]">{analysis.pureNineScore}/6</span></span>
+                      </div>
+
+                      {/* Pure-9 certificate */}
+                      {analysis.pureNineScore === 6 && (
+                        <div className="border border-[var(--accent-green)] p-4 text-center space-y-2">
+                          <p className="font-terminal text-sm text-[var(--accent-green)] text-glow-green">
+                            {'> '}NUMEROLOGICAL PERFECTION CERTIFICATE
+                          </p>
+                          <p className="font-terminal text-xs text-[var(--text-secondary)]">
+                            All six pure-9 properties confirmed. This grid is numerologically flawless.
+                          </p>
+                          <p className="text-xs italic text-[var(--text-secondary)]">
+                            {microDisclaimers.sudokuCertificate}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  );
+                } catch {
+                  return (
+                    <p className="font-terminal text-xs text-[var(--accent)]">
+                      {'> '}Could not parse sudoku grid. Check your input.
+                    </p>
+                  );
+                }
               })()}
             </div>
           </TerminalCard>

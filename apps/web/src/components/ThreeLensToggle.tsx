@@ -1,18 +1,25 @@
 import { useState } from 'react';
 import type { Interpretation } from '@numeron/core';
+import { chaosInterpretations } from '@numeron/core';
+import { useStore } from '../store';
 
 type Lens = 'light' | 'truth' | 'shadow';
 
 interface ThreeLensToggleProps {
   interpretation: Interpretation;
+  numberValue?: number;
 }
 
-export function ThreeLensToggle({ interpretation }: ThreeLensToggleProps) {
+export function ThreeLensToggle({ interpretation, numberValue }: ThreeLensToggleProps) {
+  const { chaosMode } = useStore();
   const [activeLens, setActiveLens] = useState<Lens>('light');
 
   const lenses: Lens[] = ['light', 'truth', 'shadow'];
 
   const getText = (lens: Lens): string => {
+    if (chaosMode && numberValue && chaosInterpretations[numberValue]) {
+      return chaosInterpretations[numberValue];
+    }
     switch (lens) {
       case 'light':
         return interpretation.positive;

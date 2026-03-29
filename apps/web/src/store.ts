@@ -19,6 +19,10 @@ interface NumeronState {
   disclaimerAcknowledged: boolean;
   acknowledgeDisclaimer: () => void;
 
+  // Chaos mode (Konami code)
+  chaosMode: boolean;
+  activateChaosMode: () => void;
+
   // Profile
   profileInput: ProfileInput | null;
   profiles: Record<NumerologySystem, NumerologyProfile> | null;
@@ -54,6 +58,9 @@ export const useStore = create<NumeronState>((set) => ({
     }
     set({ readableFont: v });
   },
+
+  chaosMode: false,
+  activateChaosMode: () => set({ chaosMode: true }),
 
   disclaimerAcknowledged: localStorage.getItem('numeron-disclaimer') === 'true',
   acknowledgeDisclaimer: () => {

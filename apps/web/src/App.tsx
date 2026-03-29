@@ -1,6 +1,9 @@
+import { useCallback } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Nav } from './components/Nav';
 import { DisclaimerBanner } from './components/DisclaimerBanner';
+import { useKonamiCode } from './hooks/useKonamiCode';
+import { useStore } from './store';
 import { Dashboard } from './pages/Dashboard';
 import { Profile } from './pages/Profile';
 import { Decode } from './pages/Decode';
@@ -12,9 +15,18 @@ import { Compatibility } from './pages/Compatibility';
 import { Share } from './pages/Share';
 
 export function App() {
+  const { activateChaosMode, chaosMode } = useStore();
+  const handleKonami = useCallback(() => activateChaosMode(), [activateChaosMode]);
+  useKonamiCode(handleKonami);
+
   return (
     <div className="scanlines min-h-screen flex flex-col">
       <DisclaimerBanner />
+      {chaosMode && (
+        <div className="bg-[var(--accent)] text-[var(--bg-primary)] font-terminal text-xs text-center py-2 tracking-widest">
+          {'> '}CHAOS MODE ACTIVATED // all interpretations are now extremely accurate
+        </div>
+      )}
       <Nav />
       <main className="flex-1 px-4 py-6 sm:py-8">
         <Routes>
