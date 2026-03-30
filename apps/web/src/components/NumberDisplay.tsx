@@ -29,7 +29,7 @@ export function NumberDisplay({
       lines.push(`LIGHT: ${interp.positive.slice(0, 100)}...`);
       lines.push(`SHADOW: ${interp.shadow.slice(0, 100)}...`);
     }
-    lines.push('numeron.retroversestudios.com');
+    lines.push('numeron.retroverse.studio');
 
     navigator.clipboard.writeText(lines.join('\n')).then(() => {
       setCopied(true);
